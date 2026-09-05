@@ -368,7 +368,7 @@ footer ul{margin:0;padding:0;display:grid;gap:9px;font-size:.94rem}
   .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding-top:76px}
   .hero-visuel{margin-top:0;aspect-ratio:3/4}
   .hero{padding-bottom:96px}
-  .histoire .wrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+  .histoire .wrap{max-width:640px;margin-left:auto;margin-right:auto}
   .form{max-width:640px}
 }
 </style>
@@ -501,7 +501,6 @@ footer ul{margin:0;padding:0;display:grid;gap:9px;font-size:.94rem}
       <p>On a créé IZARA pour l'inverse : une petite sélection claire, des descriptions honnêtes, et des prix affichés. La marque vient de démarrer — le catalogue va grandir avec toi, et on préfère le dire plutôt que faire semblant d'être là depuis dix ans.</p>
       <p class="signature">— L'équipe IZARA</p>
     </div>
-    <div class="hero-visuel" id="visuel-histoire" style="aspect-ratio:4/5"></div>
   </div>
 </section>
 
@@ -699,8 +698,10 @@ const CONTACT = {
 /* Laisse "" pour garder le fond rose provisoire.
    Mets "images/hero.jpg" quand tu auras ta photo. */
 const VISUELS = {
-  hero    : "",   // 👉 grande photo en haut du site
-  histoire: "",   // 👉 photo de la section "la marque"
+  // 👉 Réglé sur le logo pour l'instant (affiché en entier, sans recadrage).
+  //    Remplace par "images/hero.jpg" quand tu auras une vraie photo :
+  //    elle s'affichera alors recadrée en plein cadre, comme d'habitude.
+  hero: "logo.jpg",
 };
 
 /* --- C. TES PRODUITS ---------------------------------------------------- */
@@ -858,8 +859,10 @@ document.getElementById('grille-collection').innerHTML =
 document.getElementById('grille-nouveautes').innerHTML =
   NOUVEAUTES_VISIBLES.map((p,i)=>carte(p,i,'n')).join('');
 
-document.getElementById('visuel-hero').innerHTML = visuel(VISUELS.hero,'IZARA BEAUTY');
-document.getElementById('visuel-histoire').innerHTML = visuel(VISUELS.histoire,'La marque IZARA');
+/* Le logo s'affiche en entier (pas recadré comme une photo) ; une vraie photo, elle, remplit le cadre */
+document.getElementById('visuel-hero').innerHTML = (VISUELS.hero === "logo.jpg")
+  ? '<img src="logo.jpg" alt="IZARA BEAUTY" style="width:100%;height:100%;object-fit:contain;padding:14%">'
+  : visuel(VISUELS.hero,'IZARA BEAUTY');
 
 /* Section "Nos nouveautés" et grille Instagram : masquées si vides (voir tâche 4) */
 if(NOUVEAUTES_VISIBLES.length === 0){
