@@ -735,64 +735,31 @@ const PRODUITS = [
       { q:"Puis-je choisir mes teintes ?", r:"Non, l'ensemble complet est vendu tel quel, les douze incluses." },
     ],
   },
-  {
-    nom  : "Produit 1 — à remplacer",           // 👉 nom du produit
-    prix : 149,                                  // 👉 prix en dirhams
-    desc : "Courte description : à quoi il sert, pour quel type de peau.",
-    image: "",                                   // 👉 "images/produit1.jpg"
-    tag  : "",                                   // 👉 "Nouveau" ou laisse vide
-  },
-  {
-    nom  : "Produit 2 — à remplacer",
-    prix : 199,
-    desc : "Courte description : à quoi il sert, pour quel type de peau.",
-    image: "",
-    tag  : "",
-  },
-  {
-    nom  : "Produit 3 — à remplacer",
-    prix : 89,
-    desc : "Courte description : à quoi il sert, pour quel type de peau.",
-    image: "",
-    tag  : "",
-  },
-  {
-    nom  : "Produit 4 — à remplacer",
-    prix : 249,
-    desc : "Courte description : à quoi il sert, pour quel type de peau.",
-    image: "",
-    tag  : "",
-  },
 ];
 
 /* --- D. LES NOUVEAUTÉS -------------------------------------------------- */
+/* Vide pour l'instant : la section "Nos nouveautés" reste cachée (elle et
+   son lien dans le menu) tant qu'il n'y a aucun élément ici avec une photo.
+   Pour ajouter une nouveauté plus tard, colle un bloc comme celui-ci entre
+   les crochets [ ] — la section réapparaît toute seule dès qu'une photo
+   est renseignée :
+   {
+     nom  : "Nom du produit",
+     prix : 199,
+     desc : "Courte description.",
+     image: "images/nouveaute.jpg",
+     tag  : "Nouveau",
+   },
+*/
 const NOUVEAUTES = [
-  {
-    nom  : "Nouveauté 1 — à remplacer",
-    prix : 179,
-    desc : "Courte description du produit.",
-    image: "",
-    tag  : "Nouveau",
-  },
-  {
-    nom  : "Nouveauté 2 — à remplacer",
-    prix : 129,
-    desc : "Courte description du produit.",
-    image: "",
-    tag  : "Nouveau",
-  },
-  {
-    nom  : "Nouveauté 3 — à remplacer",
-    prix : 219,
-    desc : "Courte description du produit.",
-    image: "",
-    tag  : "Nouveau",
-  },
 ];
 
-/* --- E. LES 4 PHOTOS DE LA SECTION INSTAGRAM ---------------------------- */
-/* Mets ici les photos de tes vrais posts quand tu en auras. */
-const POSTS = ["", "", "", ""];
+/* --- E. LES PHOTOS DE LA SECTION INSTAGRAM ------------------------------ */
+/* Vide pour l'instant : la grille de photos reste cachée tant qu'il n'y a
+   aucune photo ici (les boutons Instagram et TikTok, eux, restent visibles).
+   Pour ajouter des photos plus tard, remplis simplement la liste, par exemple :
+   const POSTS = ["images/post1.jpg", "images/post2.jpg"]; */
+const POSTS = [];
 
 /* --- F. LA FAQ ---------------------------------------------------------- */
 /* "aDefinir: true" affiche une petite mention orange "à confirmer".
@@ -836,7 +803,7 @@ const FAQ = [
    =========================================================================== */
 
 
-/* ---------- Image ou fond provisoire ---------- */
+/* ---------- Image ou fond provisoire (réservé au hero et à "la marque") ---------- */
 function visuel(src, alt){
   if(src && src.trim() !== ""){
     return '<img src="'+src+'" alt="'+(alt||"")+'" loading="lazy">';
@@ -847,15 +814,34 @@ function visuel(src, alt){
     + '<span>PHOTO À AJOUTER</span></div>';
 }
 
+/* ---------- Photo simple, sans placeholder "PHOTO À AJOUTER" ---------- */
+/* Utilisée partout ailleurs que le hero et "la marque" : grâce au filtre
+   photo ci-dessous, elle ne reçoit jamais une source vide en temps normal. */
+function photo(src, alt){
+  return (src && src.trim() !== "") ? '<img src="'+src+'" alt="'+(alt||"")+'" loading="lazy">' : '';
+}
+
 /* ---------- Photo principale d'un produit (galerie "images" ou "image" simple) ---------- */
 function imgPrincipale(p){
   return (p.images && p.images.length) ? p.images[0] : p.image;
 }
 
+/* ---------- Filtre automatique : n'affiche que les produits avec au moins une photo ---------- */
+/* S'applique à la collection, aux nouveautés et à la liste déroulante du formulaire.
+   Un produit ajouté plus tard dans PRODUITS ou NOUVEAUTES sans "image"/"images"
+   renseigné est ignoré silencieusement, sans rien casser. */
+function aPhoto(p){
+  const imgs = (p.images && p.images.length) ? p.images : (p.image ? [p.image] : []);
+  return imgs.some(function(src){ return src && src.trim() !== ""; });
+}
+const PRODUITS_VISIBLES   = PRODUITS.filter(aPhoto);
+const NOUVEAUTES_VISIBLES = NOUVEAUTES.filter(aPhoto);
+const POSTS_VISIBLES      = POSTS.filter(function(src){ return src && src.trim() !== ""; });
+
 /* ---------- Cartes produits ---------- */
 function carte(p, i, source){
   return '<article class="carte">'
-    + '<div class="carte-photo">' + visuel(imgPrincipale(p), p.nom)
+    + '<div class="carte-photo">' + photo(imgPrincipale(p), p.nom)
     + (p.tag ? '<span class="etiquette">'+p.tag+'</span>' : '')
     + '</div>'
     + '<h3>'+p.nom+'</h3>'
@@ -866,14 +852,26 @@ function carte(p, i, source){
 }
 
 document.getElementById('grille-collection').innerHTML =
-  PRODUITS.map((p,i)=>carte(p,i,'c')).join('');
+  PRODUITS_VISIBLES.map((p,i)=>carte(p,i,'c')).join('');
 document.getElementById('grille-nouveautes').innerHTML =
-  NOUVEAUTES.map((p,i)=>carte(p,i,'n')).join('');
+  NOUVEAUTES_VISIBLES.map((p,i)=>carte(p,i,'n')).join('');
 
 document.getElementById('visuel-hero').innerHTML = visuel(VISUELS.hero,'IZARA BEAUTY');
 document.getElementById('visuel-histoire').innerHTML = visuel(VISUELS.histoire,'La marque IZARA');
-document.getElementById('grille-social').innerHTML =
-  POSTS.map(p=>'<div class="tuile-social">'+visuel(p,'Post IZARA')+'</div>').join('');
+
+/* Section "Nos nouveautés" et grille Instagram : masquées si vides (voir tâche 4) */
+if(NOUVEAUTES_VISIBLES.length === 0){
+  document.getElementById('nouveautes').style.display = 'none';
+  document.querySelectorAll('a[href="#nouveautes"]').forEach(function(a){
+    (a.closest('li') || a).style.display = 'none';
+  });
+}
+if(POSTS_VISIBLES.length === 0){
+  document.getElementById('grille-social').style.display = 'none';
+} else {
+  document.getElementById('grille-social').innerHTML =
+    POSTS_VISIBLES.map(p=>'<div class="tuile-social">'+photo(p,'Post IZARA')+'</div>').join('');
+}
 
 /* ---------- Liens réseaux et contact ---------- */
 const lienWa = 'https://wa.me/'+CONTACT.whatsapp;
@@ -890,7 +888,7 @@ document.getElementById('liens-contact').innerHTML =
 document.getElementById('annee').textContent = new Date().getFullYear();
 
 /* ---------- Liste déroulante du formulaire ---------- */
-const TOUS = PRODUITS.concat(NOUVEAUTES);
+const TOUS = PRODUITS_VISIBLES.concat(NOUVEAUTES_VISIBLES);
 document.getElementById('f-produit').innerHTML =
   TOUS.map(p=>'<option>'+p.nom+'</option>').join('');
 
@@ -927,17 +925,17 @@ let produitOuvert = null;
 function construireFiche(p){
   const imgs = (p.images && p.images.length) ? p.images : [p.image];
 
-  document.getElementById('fiche-photo-principale').innerHTML = visuel(imgs[0], p.nom);
+  document.getElementById('fiche-photo-principale').innerHTML = photo(imgs[0], p.nom);
 
   const vign = document.getElementById('fiche-vignettes');
   if(imgs.length > 1){
     vign.style.display = 'flex';
     vign.innerHTML = imgs.map(function(src,i){
-      return '<button class="vignette'+(i===0?' on':'')+'" data-img="'+i+'" aria-label="Photo '+(i+1)+'">'+visuel(src,p.nom)+'</button>';
+      return '<button class="vignette'+(i===0?' on':'')+'" data-img="'+i+'" aria-label="Photo '+(i+1)+'">'+photo(src,p.nom)+'</button>';
     }).join('');
     vign.querySelectorAll('.vignette').forEach(function(btn,i){
       btn.addEventListener('click', function(){
-        document.getElementById('fiche-photo-principale').innerHTML = visuel(imgs[i], p.nom);
+        document.getElementById('fiche-photo-principale').innerHTML = photo(imgs[i], p.nom);
         vign.querySelectorAll('.vignette').forEach(v=>v.classList.remove('on'));
         btn.classList.add('on');
       });
@@ -982,7 +980,7 @@ function construireFiche(p){
 document.addEventListener('click', function(e){
   const b = e.target.closest('button[data-i][data-src]');
   if(!b) return;
-  const liste = b.dataset.src === 'c' ? PRODUITS : NOUVEAUTES;
+  const liste = b.dataset.src === 'c' ? PRODUITS_VISIBLES : NOUVEAUTES_VISIBLES;
   produitOuvert = liste[+b.dataset.i];
   construireFiche(produitOuvert);
   fiche.scrollTop = 0;
@@ -1014,7 +1012,7 @@ function majPanier(){
     ? '<p class="panier-vide">Ton panier est vide.<br>Ajoute un produit depuis la collection.</p>'
     : panier.map(function(l,i){
         return '<div class="ligne">'
-          + '<div class="mini">'+visuel(l.image, l.nom)+'</div>'
+          + '<div class="mini">'+photo(l.image, l.nom)+'</div>'
           + '<div class="info"><strong>'+l.nom+'</strong><small>'+l.prix+' DH</small>'
           + '<div class="qte"><button data-m="'+i+'">−</button><span>'+l.qte+'</span><button data-p="'+i+'">+</button></div>'
           + '</div></div>';
