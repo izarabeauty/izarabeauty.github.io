@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- ============================================================
+     IZARA BEAUTY — Site vitrine + commande WhatsApp
+     ------------------------------------------------------------
+     TOUT LE SITE EST DANS CE SEUL FICHIER.
+     Pour modifier le contenu, va dans la zone
+     "RÉGLAGES" plus bas (cherche le mot RÉGLAGES).
+     ============================================================ -->
+
+<title>IZARA BEAUTY — Beauté accessible au Maroc</title>
+
+<!-- 👉 À REMPLACER : le texte ci-dessous apparaît sur Google et quand tu partages le lien -->
+<meta name="description" content="IZARA BEAUTY — une sélection de produits beauté et skincare choisis avec soin, à prix accessibles, livrés partout au Maroc.">
+<meta property="og:title" content="IZARA BEAUTY">
+<meta property="og:description" content="Beauté accessible, livrée partout au Maroc.">
+<meta name="theme-color" content="#33202B">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ===========================================================
+   1. COULEURS ET POLICES
+   =========================================================== */
+:root{
+  --encre:#33202B;        /* aubergine profond : textes et boutons */
+  --encre-doux:#6B5560;   /* textes secondaires */
+  --rose:#F6E9E6;         /* fond rosé des sections */
+  --rose-fonce:#E4BFB9;   /* rose plus soutenu */
+  --sable:#FBF7F5;        /* fond très clair */
+  --or:#B8894B;           /* or chaud : petits détails */
+  --blanc:#FFFFFF;
+  --ombre:0 18px 40px -24px rgba(51,32,43,.35);
+  --arche:120px 120px 10px 10px / 90px 90px 6px 6px; /* forme d'arche */
+  --max:1120px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--blanc);
+  color:var(--encre);
+  font-family:'Jost',system-ui,-apple-system,sans-serif;
+  font-weight:300;
+  font-size:16px;
+  line-height:1.65;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+a{color:inherit;text-decoration:none}
+
+h1,h2,h3{
+  font-family:'Fraunces',Georgia,serif;
+  font-weight:400;
+  line-height:1.14;
+  letter-spacing:-.01em;
+  margin:0;
+}
+h2{font-size:clamp(1.75rem,6.5vw,2.6rem)}
+h3{font-size:1.15rem}
+p{margin:0 0 1em}
+
+.wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 22px}
+section{padding:72px 0}
+.centre{text-align:center}
+
+/* Petit trait doré sous les titres de section */
+.titre-section{margin-bottom:14px}
+.trait{width:44px;height:1px;background:var(--or);margin:0 0 26px}
+.centre .trait{margin-left:auto;margin-right:auto}
+.intro{color:var(--encre-doux);max-width:56ch;margin-bottom:34px}
+.centre .intro{margin-left:auto;margin-right:auto}
+
+/* Boutons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:15px 30px;border-radius:999px;
+  background:var(--encre);color:var(--blanc);
+  font-size:.95rem;letter-spacing:.02em;
+  transition:transform .18s ease,opacity .18s ease;
+  min-height:48px;
+}
+.btn:active{transform:scale(.97)}
+.btn-clair{background:var(--blanc);color:var(--encre);border:1px solid rgba(51,32,43,.18)}
+.btn-vert{background:#25955A;color:#fff}
+.btn-large{width:100%}
+:focus-visible{outline:2px solid var(--or);outline-offset:3px;border-radius:6px}
+
+/* ===========================================================
+   2. EN-TÊTE
+   =========================================================== */
+header{
+  position:sticky;top:0;z-index:60;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(51,32,43,.08);
+}
+.barre{display:flex;align-items:center;justify-content:space-between;height:62px}
+.logo{font-family:'Fraunces',serif;font-size:1.12rem;letter-spacing:.14em}
+.logo span{color:var(--or)}
+.actions{display:flex;align-items:center;gap:6px}
+.icone{width:44px;height:44px;display:grid;place-items:center;position:relative}
+.pastille{
+  position:absolute;top:5px;right:4px;min-width:17px;height:17px;padding:0 4px;
+  background:var(--or);color:#fff;border-radius:999px;
+  font-size:.65rem;line-height:17px;text-align:center;display:none;
+}
+.pastille.on{display:block}
+nav.menu{
+  position:fixed;inset:62px 0 auto 0;background:var(--blanc);
+  border-bottom:1px solid rgba(51,32,43,.08);
+  padding:10px 22px 26px;display:none;z-index:59;
+}
+nav.menu.on{display:block}
+nav.menu a{display:block;padding:13px 0;border-bottom:1px solid rgba(51,32,43,.07);font-size:1.05rem}
+.liens-bureau{display:none}
+
+/* ===========================================================
+   3. HERO
+   =========================================================== */
+.hero{
+  position:relative;padding:0 0 64px;
+  background:linear-gradient(180deg,var(--sable) 0%,var(--rose) 100%);
+  overflow:hidden;
+}
+.hero-inner{padding-top:52px}
+.badge{
+  display:inline-block;padding:7px 15px;border:1px solid rgba(184,137,75,.45);
+  border-radius:999px;font-size:.72rem;letter-spacing:.13em;color:var(--or);
+  margin-bottom:22px;
+}
+.hero h1{font-size:clamp(2.6rem,13vw,4.6rem);letter-spacing:.01em}
+.hero h1 em{font-style:normal;display:block;font-size:.34em;letter-spacing:.34em;color:var(--encre-doux);margin-top:14px;font-family:'Jost',sans-serif;font-weight:300}
+.hero p.tagline{font-size:1.08rem;color:var(--encre-doux);max-width:34ch;margin:22px 0 30px}
+.hero-visuel{
+  margin-top:44px;position:relative;
+  border-radius:var(--arche);overflow:hidden;
+  box-shadow:var(--ombre);
+  aspect-ratio:4/5;background:var(--rose-fonce);
+}
+.hero-visuel img{width:100%;height:100%;object-fit:cover}
+
+/* Bandeau défilant sous le hero */
+.bandeau{background:var(--encre);color:#fff;padding:13px 0;overflow:hidden}
+.bandeau-piste{display:flex;gap:44px;white-space:nowrap;font-size:.74rem;letter-spacing:.2em;opacity:.9}
+
+/* ===========================================================
+   4. PRODUITS
+   =========================================================== */
+.grille{display:grid;grid-template-columns:repeat(2,1fr);gap:16px 12px}
+.carte{display:flex;flex-direction:column}
+.carte-photo{
+  position:relative;aspect-ratio:3/4;overflow:hidden;
+  border-radius:90px 90px 8px 8px / 70px 70px 5px 5px;
+  background:var(--rose);margin-bottom:12px;
+}
+.carte-photo img{width:100%;height:100%;object-fit:cover}
+.etiquette{
+  position:absolute;top:12px;left:12px;background:rgba(255,255,255,.94);
+  padding:5px 11px;border-radius:999px;font-size:.66rem;letter-spacing:.09em;color:var(--encre);
+}
+.carte h3{font-size:1.02rem;margin-bottom:3px}
+.carte .desc{font-size:.83rem;color:var(--encre-doux);line-height:1.5;margin:0 0 8px}
+.prix{font-family:'Fraunces',serif;font-size:1.02rem;margin-bottom:11px;display:block}
+.carte .btn{padding:11px 18px;font-size:.85rem;min-height:42px;align-self:flex-start}
+
+/* Placeholder photo (tant qu'il n'y a pas d'image) */
+.vide{
+  width:100%;height:100%;display:grid;place-content:center;gap:10px;justify-items:center;
+  background:linear-gradient(150deg,#F6E9E6 0%,#EAD3CE 55%,#E4BFB9 100%);
+  color:#8A6A73;text-align:center;padding:16px;
+}
+.vide svg{opacity:.5}
+.vide span{font-size:.68rem;letter-spacing:.12em;line-height:1.5}
+
+/* ===========================================================
+   5. POURQUOI NOUS
+   =========================================================== */
+.avantages{background:var(--sable)}
+.liste-avantages{display:grid;gap:2px;background:rgba(51,32,43,.09);border-top:1px solid rgba(51,32,43,.09);border-bottom:1px solid rgba(51,32,43,.09)}
+.avantage{background:var(--sable);padding:26px 4px}
+.avantage h3{margin-bottom:6px;font-size:1.08rem}
+.avantage p{font-size:.9rem;color:var(--encre-doux);margin:0;max-width:48ch}
+.avantage .ic{color:var(--or);margin-bottom:12px;display:block}
+
+/* ===========================================================
+   6. HISTOIRE
+   =========================================================== */
+.histoire{background:var(--rose)}
+.histoire .signature{font-family:'Fraunces',serif;font-size:1.05rem;color:var(--or)}
+.citation{
+  font-family:'Fraunces',serif;font-size:clamp(1.4rem,5.6vw,2rem);line-height:1.3;
+  margin:0 0 24px;
+}
+
+/* ===========================================================
+   7. RÉSEAUX SOCIAUX
+   =========================================================== */
+.grille-social{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:26px}
+.tuile-social{aspect-ratio:1;border-radius:6px;overflow:hidden;background:var(--rose)}
+.tuile-social img{width:100%;height:100%;object-fit:cover}
+.boutons-social{display:flex;flex-direction:column;gap:10px}
+
+/* ===========================================================
+   8. FAQ
+   =========================================================== */
+.faq{background:var(--sable)}
+.q{border-bottom:1px solid rgba(51,32,43,.12)}
+.q button{
+  width:100%;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+  padding:19px 0;text-align:left;font-size:1rem;line-height:1.4;
+}
+.q .plus{flex:0 0 auto;color:var(--or);font-size:1.3rem;line-height:1;transition:transform .25s ease;margin-top:2px}
+.q[open-state="on"] .plus{transform:rotate(45deg)}
+.r{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.r p{font-size:.92rem;color:var(--encre-doux);padding-bottom:19px;margin:0;max-width:60ch}
+.a-definir{color:var(--or);font-size:.78rem;letter-spacing:.06em;display:inline-block;margin-top:6px}
+
+/* ===========================================================
+   9. FORMULAIRE DE COMMANDE
+   =========================================================== */
+.commande{background:var(--encre);color:#fff}
+.commande h2,.commande .citation{color:#fff}
+.commande .intro{color:rgba(255,255,255,.72)}
+.commande .trait{background:var(--or)}
+.form{display:grid;gap:14px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.champ{display:block}
+.champ label{display:block;font-size:.76rem;letter-spacing:.09em;color:rgba(255,255,255,.65);margin-bottom:7px}
+.champ input,.champ select,.champ textarea{
+  width:100%;padding:14px 15px;border-radius:10px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);
+  color:#fff;font-family:inherit;font-size:1rem;font-weight:300;
+}
+.champ textarea{min-height:88px;resize:vertical}
+.champ input::placeholder,.champ textarea::placeholder{color:rgba(255,255,255,.35)}
+.champ select option{background:#33202B;color:#fff}
+.note-form{font-size:.8rem;color:rgba(255,255,255,.55);margin:4px 0 0}
+
+/* ===========================================================
+   10. PANIER (volet latéral)
+   =========================================================== */
+.voile{position:fixed;inset:0;background:rgba(51,32,43,.45);z-index:80;display:none}
+.voile.on{display:block}
+.panier{
+  position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);
+  background:var(--blanc);z-index:81;transform:translateX(100%);
+  transition:transform .3s ease;display:flex;flex-direction:column;
+}
+.panier.on{transform:translateX(0)}
+.panier-haut{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid rgba(51,32,43,.1)}
+.panier-corps{flex:1;overflow-y:auto;padding:18px 22px}
+.panier-bas{padding:18px 22px 24px;border-top:1px solid rgba(51,32,43,.1);display:grid;gap:10px}
+.ligne{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(51,32,43,.07)}
+.ligne .mini{width:56px;height:70px;border-radius:26px 26px 4px 4px;overflow:hidden;flex:0 0 auto;background:var(--rose)}
+.ligne .info{flex:1;min-width:0}
+.ligne .info strong{display:block;font-weight:400;font-size:.95rem}
+.ligne .info small{color:var(--encre-doux)}
+.qte{display:flex;align-items:center;gap:6px;margin-top:6px}
+.qte button{width:26px;height:26px;border:1px solid rgba(51,32,43,.2);border-radius:50%;line-height:1;display:grid;place-items:center}
+.total{display:flex;justify-content:space-between;font-family:'Fraunces',serif;font-size:1.15rem}
+.panier-vide{text-align:center;color:var(--encre-doux);padding:50px 10px;font-size:.95rem}
+
+/* ===========================================================
+   11. FICHE PRODUIT (fenêtre)
+   =========================================================== */
+.fiche{
+  position:fixed;left:0;right:0;bottom:0;max-height:92vh;overflow-y:auto;
+  background:var(--blanc);z-index:81;border-radius:22px 22px 0 0;
+  transform:translateY(100%);transition:transform .3s ease;padding:0 0 26px;
+}
+.fiche.on{transform:translateY(0)}
+.fiche-photo{aspect-ratio:1;background:var(--rose);border-radius:22px 22px 0 0;overflow:hidden}
+.fiche-photo img{width:100%;height:100%;object-fit:cover}
+.fiche-txt{padding:22px}
+.fermer{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;z-index:2}
+
+/* ===========================================================
+   12. PIED DE PAGE
+   =========================================================== */
+footer{background:var(--sable);padding:56px 0 30px;border-top:1px solid rgba(51,32,43,.08)}
+.cols{display:grid;gap:32px;margin-bottom:36px}
+footer h4{font-size:.76rem;letter-spacing:.13em;color:var(--encre-doux);margin:0 0 14px;font-weight:400}
+footer li{list-style:none}
+footer ul{margin:0;padding:0;display:grid;gap:9px;font-size:.94rem}
+.bas{border-top:1px solid rgba(51,32,43,.1);padding-top:20px;font-size:.78rem;color:var(--encre-doux);display:grid;gap:6px}
+
+/* Bouton WhatsApp flottant */
+.flottant{
+  position:fixed;right:16px;bottom:16px;z-index:70;
+  width:56px;height:56px;border-radius:50%;background:#25955A;
+  display:grid;place-items:center;box-shadow:0 10px 26px -8px rgba(0,0,0,.45);
+}
+
+/* ===========================================================
+   13. ANIMATION D'OUVERTURE (hero uniquement)
+   =========================================================== */
+.anim{opacity:0;transform:translateY(14px);animation:entree .8s cubic-bezier(.22,1,.36,1) forwards}
+.anim:nth-child(1){animation-delay:.05s}
+.anim:nth-child(2){animation-delay:.15s}
+.anim:nth-child(3){animation-delay:.25s}
+.anim:nth-child(4){animation-delay:.35s}
+.anim:nth-child(5){animation-delay:.45s}
+@keyframes entree{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .anim{opacity:1;transform:none}
+}
+
+/* ===========================================================
+   14. GRANDS ÉCRANS
+   =========================================================== */
+@media(min-width:700px){
+  section{padding:96px 0}
+  .grille{grid-template-columns:repeat(3,1fr);gap:34px 24px}
+  .grille-social{grid-template-columns:repeat(4,1fr)}
+  .liste-avantages{grid-template-columns:repeat(2,1fr)}
+  .avantage{padding:32px 26px}
+  .cols{grid-template-columns:repeat(3,1fr);gap:44px}
+  .boutons-social{flex-direction:row}
+  .boutons-social .btn{flex:1}
+}
+@media(min-width:960px){
+  .liens-bureau{display:flex;gap:30px;font-size:.92rem}
+  .icone.burger{display:none}
+  .grille{grid-template-columns:repeat(4,1fr)}
+  .liste-avantages{grid-template-columns:repeat(4,1fr)}
+  .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding-top:76px}
+  .hero-visuel{margin-top:0;aspect-ratio:3/4}
+  .hero{padding-bottom:96px}
+  .histoire .wrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+  .form{max-width:640px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     EN-TÊTE
+     ========================================================= -->
+<header>
+  <div class="wrap barre">
+    <a href="#top" class="logo">IZARA<span>·</span>BEAUTY</a>
+
+    <div class="liens-bureau">
+      <a href="#collection">Collection</a>
+      <a href="#nouveautes">Nouveautés</a>
+      <a href="#histoire">La marque</a>
+      <a href="#faq">FAQ</a>
+      <a href="#commander">Commander</a>
+    </div>
+
+    <div class="actions">
+      <button class="icone" id="btn-panier" aria-label="Ouvrir le panier">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span class="pastille" id="compteur">0</span>
+      </button>
+      <button class="icone burger" id="btn-menu" aria-label="Ouvrir le menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><path d="M4 8h16M4 16h16"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <nav class="menu" id="menu">
+    <a href="#collection">Collection</a>
+    <a href="#nouveautes">Nos nouveautés</a>
+    <a href="#histoire">La marque</a>
+    <a href="#social">Instagram &amp; TikTok</a>
+    <a href="#faq">Questions fréquentes</a>
+    <a href="#commander">Commander</a>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- =========================================================
+     1. HERO
+     ========================================================= -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <span class="badge anim">NOUVELLE MARQUE MAROCAINE</span>
+      <h1 class="anim">Izara<em>BEAUTY</em></h1>
+      <!-- 👉 À REMPLACER si tu veux une autre phrase d'accroche -->
+      <p class="tagline anim">Une sélection de produits beauté et skincare choisis avec soin, à des prix qui restent accessibles.</p>
+      <a href="#collection" class="btn anim">Découvrir la collection</a>
+    </div>
+
+    <!-- 👉 PHOTO PRINCIPALE : remplace "" par "images/hero.jpg" dans les RÉGLAGES (VISUELS.hero) -->
+    <div class="hero-visuel anim" id="visuel-hero"></div>
+  </div>
+</section>
+
+<div class="bandeau">
+  <div class="wrap bandeau-piste">
+    <span>LIVRAISON PARTOUT AU MAROC</span>
+    <span>·</span>
+    <span>PAIEMENT CASH OU VIREMENT</span>
+    <span>·</span>
+    <span>COMMANDE PAR WHATSAPP</span>
+  </div>
+</div>
+
+<!-- =========================================================
+     2. COLLECTION
+     ========================================================= -->
+<section id="collection">
+  <div class="wrap">
+    <h2 class="titre-section">La collection</h2>
+    <div class="trait"></div>
+    <p class="intro">Chaque produit est choisi un par un, testé, et retenu seulement s'il tient ses promesses. La collection s'agrandit petit à petit.</p>
+    <div class="grille" id="grille-collection"></div>
+  </div>
+</section>
+
+<!-- =========================================================
+     3. POURQUOI NOUS
+     ========================================================= -->
+<section class="avantages">
+  <div class="wrap">
+    <h2 class="titre-section">Ce qu'on te promet</h2>
+    <div class="trait"></div>
+  </div>
+  <div class="wrap">
+    <div class="liste-avantages">
+      <div class="avantage">
+        <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="m12 3 2.4 5.2 5.6.7-4.2 3.9 1.1 5.6L12 15.7 7.1 18.4l1.1-5.6L4 8.9l5.6-.7L12 3Z"/></svg></span>
+        <h3>Une sélection soignée</h3>
+        <p>Peu de références, mais chacune est choisie à la main. On préfère un petit catalogue qu'on assume à un grand catalogue au hasard.</p>
+      </div>
+      <div class="avantage">
+        <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 4v16M8.5 8.2c0-1.5 1.6-2.4 3.5-2.4s3.5.9 3.5 2.4-1.6 2.3-3.5 2.7-3.5 1.2-3.5 2.7 1.6 2.6 3.5 2.6 3.5-1 3.5-2.5"/></svg></span>
+        <h3>Des prix accessibles</h3>
+        <p>Les prix sont affichés clairement en dirhams, sans frais surprise au moment de commander.</p>
+      </div>
+      <div class="avantage">
+        <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 8h11v9H3zM14 11h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.7"/><circle cx="17" cy="18" r="1.7"/></svg></span>
+        <h3>Livraison partout au Maroc</h3>
+        <p>On livre dans toutes les villes du Royaume. Tu donnes ta ville et ton adresse, on s'occupe du reste.</p>
+      </div>
+      <div class="avantage">
+        <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+        <h3>Une vraie personne au bout</h3>
+        <p>Une question avant de commander ? Écris sur WhatsApp ou Instagram, tu auras une réponse d'une vraie personne.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     4. HISTOIRE DE LA MARQUE
+     ========================================================= -->
+<section class="histoire" id="histoire">
+  <div class="wrap">
+    <div>
+      <!-- 👉 À REMPLACER : écris ton histoire ici, avec tes propres mots -->
+      <p class="citation">IZARA BEAUTY est née d'une idée simple : la beauté ne devrait pas être compliquée, ni chère.</p>
+      <p>Trouver un bon produit au Maroc prend souvent des heures : des dizaines de pages, des prix flous, et l'impression de ne jamais savoir ce qu'on achète vraiment.</p>
+      <p>On a créé IZARA pour l'inverse : une petite sélection claire, des descriptions honnêtes, et des prix affichés. La marque vient de démarrer — le catalogue va grandir avec toi, et on préfère le dire plutôt que faire semblant d'être là depuis dix ans.</p>
+      <p class="signature">— L'équipe IZARA</p>
+    </div>
+    <div class="hero-visuel" id="visuel-histoire" style="aspect-ratio:4/5"></div>
+  </div>
+</section>
+
+<!-- =========================================================
+     5. NOUVEAUTÉS
+     ========================================================= -->
+<section id="nouveautes">
+  <div class="wrap">
+    <h2 class="titre-section">Nos nouveautés</h2>
+    <div class="trait"></div>
+    <p class="intro">Les dernières références arrivées dans la boutique.</p>
+    <div class="grille" id="grille-nouveautes"></div>
+  </div>
+</section>
+
+<!-- =========================================================
+     6. RÉSEAUX SOCIAUX
+     ========================================================= -->
+<section id="social" style="background:var(--rose)">
+  <div class="wrap centre">
+    <h2 class="titre-section">Suis-nous au quotidien</h2>
+    <div class="trait"></div>
+    <p class="intro">Nouveautés, conseils beauté et coulisses de la marque, tous les jours sur Instagram et TikTok.</p>
+    <div class="grille-social" id="grille-social"></div>
+    <div class="boutons-social">
+      <a class="btn" id="lien-insta" target="_blank" rel="noopener">Instagram @izara.beauty1</a>
+      <a class="btn btn-clair" id="lien-tiktok" target="_blank" rel="noopener">TikTok @izara.beauty1</a>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     7. FAQ
+     ========================================================= -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <h2 class="titre-section">Questions fréquentes</h2>
+    <div class="trait"></div>
+    <div id="liste-faq"></div>
+  </div>
+</section>
+
+<!-- =========================================================
+     8. COMMANDER
+     ========================================================= -->
+<section class="commande" id="commander">
+  <div class="wrap">
+    <h2 class="titre-section">Passer commande</h2>
+    <div class="trait"></div>
+    <p class="intro">Remplis le formulaire : ta commande s'ouvre automatiquement dans WhatsApp, prête à envoyer. Tu confirmes en un message.</p>
+
+    <div class="form">
+      <div class="duo">
+        <label class="champ"><span>NOM</span><input id="f-nom" type="text" placeholder="Alaoui" autocomplete="family-name"></label>
+        <label class="champ"><span>PRÉNOM</span><input id="f-prenom" type="text" placeholder="Salma" autocomplete="given-name"></label>
+      </div>
+      <label class="champ"><span>TÉLÉPHONE</span><input id="f-tel" type="tel" placeholder="06 00 00 00 00" autocomplete="tel"></label>
+      <div class="duo">
+        <label class="champ"><span>VILLE</span><input id="f-ville" type="text" placeholder="Casablanca" autocomplete="address-level2"></label>
+        <label class="champ"><span>QUANTITÉ</span><input id="f-qte" type="number" min="1" value="1"></label>
+      </div>
+      <label class="champ"><span>ADRESSE</span><input id="f-adresse" type="text" placeholder="Rue, quartier, n° d'immeuble" autocomplete="street-address"></label>
+      <label class="champ"><span>PRODUIT</span><select id="f-produit"></select></label>
+      <label class="champ"><span>NOTES (facultatif)</span><textarea id="f-notes" placeholder="Heure de livraison préférée, précision sur la teinte…"></textarea></label>
+
+      <button class="btn btn-vert btn-large" id="btn-envoyer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm5.5 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .1-1.6-.1-.4-.1-.9-.3-1.5-.6-2.7-1.2-4.4-3.9-4.6-4.1-.1-.2-1-1.4-1-2.6s.6-1.8.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2 0 .4-.1.5l-.4.5c-.1.2-.3.3-.1.6.1.3.6 1.1 1.4 1.7 1 .8 1.7 1 2 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.3-.2.6-.1l1.8.9c.3.1.4.2.5.3 0 .1 0 .6-.2 1.1Z"/></svg>
+        Envoyer ma commande sur WhatsApp
+      </button>
+      <p class="note-form">Aucune information n'est stockée sur le site : ton message part directement sur WhatsApp.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- =========================================================
+     9. PIED DE PAGE
+     ========================================================= -->
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="logo" style="font-size:1.25rem;margin-bottom:12px">IZARA<span>·</span>BEAUTY</div>
+        <p style="font-size:.9rem;color:var(--encre-doux);max-width:34ch">Beauté et skincare accessibles, livrés partout au Maroc.</p>
+      </div>
+      <div>
+        <h4>BOUTIQUE</h4>
+        <ul>
+          <li><a href="#collection">Collection</a></li>
+          <li><a href="#nouveautes">Nos nouveautés</a></li>
+          <li><a href="#commander">Commander</a></li>
+          <li><a href="#faq">Livraison</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>NOUS CONTACTER</h4>
+        <ul id="liens-contact"></ul>
+      </div>
+    </div>
+    <div class="bas">
+      <div>
+        <!-- 👉 À REMPLACER plus tard par tes vraies pages -->
+        <a href="#" onclick="alert('Page à rédiger : politique de confidentialité.');return false">Politique de confidentialité</a>
+        &nbsp;·&nbsp;
+        <a href="#" onclick="alert('Page à rédiger : conditions générales de vente.');return false">Conditions générales de vente</a>
+      </div>
+      <div>© <span id="annee"></span> IZARA BEAUTY — Maroc</div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bouton WhatsApp flottant -->
+<a class="flottant" id="flottant" target="_blank" rel="noopener" aria-label="Nous écrire sur WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm5.5 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .1-1.6-.1-.4-.1-.9-.3-1.5-.6-2.7-1.2-4.4-3.9-4.6-4.1-.1-.2-1-1.4-1-2.6s.6-1.8.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2 0 .4-.1.5l-.4.5c-.1.2-.3.3-.1.6.1.3.6 1.1 1.4 1.7 1 .8 1.7 1 2 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.3-.2.6-.1l1.8.9c.3.1.4.2.5.3 0 .1 0 .6-.2 1.1Z"/></svg>
+</a>
+
+<!-- Panier -->
+<div class="voile" id="voile"></div>
+<aside class="panier" id="panier" aria-label="Panier">
+  <div class="panier-haut">
+    <strong style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:400">Mon panier</strong>
+    <button class="icone" id="fermer-panier" aria-label="Fermer">
+      <svg width="20" height="20" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+  <div class="panier-corps" id="panier-corps"></div>
+  <div class="panier-bas">
+    <div class="total"><span>Total</span><span id="panier-total">0 DH</span></div>
+    <p style="font-size:.78rem;color:var(--encre-doux);margin:0">Les frais de livraison sont confirmés sur WhatsApp.</p>
+    <button class="btn btn-vert btn-large" id="commander-panier">Commander sur WhatsApp</button>
+  </div>
+</aside>
+
+<!-- Fiche produit -->
+<div class="fiche" id="fiche">
+  <button class="fermer" id="fermer-fiche" aria-label="Fermer">
+    <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
+  <div class="fiche-photo" id="fiche-photo"></div>
+  <div class="fiche-txt">
+    <h3 id="fiche-nom" style="font-size:1.5rem;margin-bottom:6px"></h3>
+    <span class="prix" id="fiche-prix"></span>
+    <p id="fiche-desc" style="color:var(--encre-doux);font-size:.95rem"></p>
+    <button class="btn btn-large" id="fiche-ajouter">Ajouter au panier</button>
+  </div>
+</div>
+
+<script>
+/* ===========================================================================
+   ██  RÉGLAGES  ██   ← C'EST ICI QUE TU MODIFIES TOUT LE SITE
+   ---------------------------------------------------------------------------
+   Tu n'as besoin de toucher à RIEN d'autre dans le fichier.
+   Règles importantes :
+     • Garde toujours les guillemets " " autour du texte.
+     • Garde toujours la virgule à la fin de chaque ligne.
+     • Le prix s'écrit en chiffres uniquement : 149  (pas "149 DH")
+   =========================================================================== */
+
+/* --- A. TES COORDONNÉES ------------------------------------------------- */
+const CONTACT = {
+  whatsapp : "212616472960",   // 👉 ton numéro SANS le 0 et AVEC 212 devant
+  telephone: "0616472960",     // 👉 le numéro affiché sur le site
+  instagram: "izara.beauty1",  // 👉 ton pseudo Instagram, sans le @
+  tiktok   : "izara.beauty1",  // 👉 ton pseudo TikTok, sans le @
+};
+
+/* --- B. LES GRANDES PHOTOS --------------------------------------------- */
+/* Laisse "" pour garder le fond rose provisoire.
+   Mets "images/hero.jpg" quand tu auras ta photo. */
+const VISUELS = {
+  hero    : "",   // 👉 grande photo en haut du site
+  histoire: "",   // 👉 photo de la section "la marque"
+};
+
+/* --- C. TES PRODUITS ---------------------------------------------------- */
+/* Pour AJOUTER un produit : copie un bloc { ... }, colle-le en dessous,
+   et change le texte. Pour SUPPRIMER : efface le bloc { ... } en entier. */
+const PRODUITS = [
+  {
+    nom  : "Produit 1 — à remplacer",           // 👉 nom du produit
+    prix : 149,                                  // 👉 prix en dirhams
+    desc : "Courte description : à quoi il sert, pour quel type de peau.",
+    image: "",                                   // 👉 "images/produit1.jpg"
+    tag  : "",                                   // 👉 "Nouveau" ou laisse vide
+  },
+  {
+    nom  : "Produit 2 — à remplacer",
+    prix : 199,
+    desc : "Courte description : à quoi il sert, pour quel type de peau.",
+    image: "",
+    tag  : "",
+  },
+  {
+    nom  : "Produit 3 — à remplacer",
+    prix : 89,
+    desc : "Courte description : à quoi il sert, pour quel type de peau.",
+    image: "",
+    tag  : "",
+  },
+  {
+    nom  : "Produit 4 — à remplacer",
+    prix : 249,
+    desc : "Courte description : à quoi il sert, pour quel type de peau.",
+    image: "",
+    tag  : "",
+  },
+];
+
+/* --- D. LES NOUVEAUTÉS -------------------------------------------------- */
+const NOUVEAUTES = [
+  {
+    nom  : "Nouveauté 1 — à remplacer",
+    prix : 179,
+    desc : "Courte description du produit.",
+    image: "",
+    tag  : "Nouveau",
+  },
+  {
+    nom  : "Nouveauté 2 — à remplacer",
+    prix : 129,
+    desc : "Courte description du produit.",
+    image: "",
+    tag  : "Nouveau",
+  },
+  {
+    nom  : "Nouveauté 3 — à remplacer",
+    prix : 219,
+    desc : "Courte description du produit.",
+    image: "",
+    tag  : "Nouveau",
+  },
+];
+
+/* --- E. LES 4 PHOTOS DE LA SECTION INSTAGRAM ---------------------------- */
+/* Mets ici les photos de tes vrais posts quand tu en auras. */
+const POSTS = ["", "", "", ""];
+
+/* --- F. LA FAQ ---------------------------------------------------------- */
+/* "aDefinir: true" affiche une petite mention orange "à confirmer".
+   Passe-le à false quand tu auras décidé. */
+const FAQ = [
+  {
+    q: "Où livrez-vous ?",
+    r: "Partout au Maroc, dans toutes les villes du Royaume.",
+    aDefinir: false,
+  },
+  {
+    q: "Quels sont les délais de livraison ?",
+    r: "Le délai exact est en cours de calage avec notre transporteur. On te le confirme sur WhatsApp au moment de la commande.",
+    aDefinir: true,   // 👉 remplace par false quand tu connaîtras le délai
+  },
+  {
+    q: "Quels sont les frais de livraison ?",
+    r: "Le tarif est en cours de finalisation. On t'annonce le montant exact avant que tu valides ta commande — jamais de surprise après.",
+    aDefinir: true,   // 👉 remplace par false quand tu connaîtras le prix
+  },
+  {
+    q: "Comment commander ?",
+    r: "Trois façons : ajoute les produits au panier sur le site, écris-nous directement sur WhatsApp, ou envoie un message en DM sur Instagram. Dans tous les cas on confirme avec toi avant l'envoi.",
+    aDefinir: false,
+  },
+  {
+    q: "Quels moyens de paiement acceptez-vous ?",
+    r: "Virement bancaire, ou paiement en espèces.",
+    aDefinir: false,
+  },
+  {
+    q: "Puis-je retourner ma commande ?",
+    r: "Notre politique de retour est en cours de rédaction. En attendant, si un produit arrive abîmé ou ne correspond pas, écris-nous sur WhatsApp : on trouve une solution.",
+    aDefinir: true,   // 👉 remplace par false quand ta politique sera écrite
+  },
+];
+
+/* ===========================================================================
+   ██  FIN DES RÉGLAGES  ██
+   Tu peux t'arrêter ici. Le code en dessous fait fonctionner le site.
+   =========================================================================== */
+
+
+/* ---------- Image ou fond provisoire ---------- */
+function visuel(src, alt){
+  if(src && src.trim() !== ""){
+    return '<img src="'+src+'" alt="'+(alt||"")+'" loading="lazy">';
+  }
+  return '<div class="vide">'
+    + '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">'
+    + '<path d="M12 3c2.5 3 4 5.4 4 7.6a4 4 0 0 1-8 0C8 8.4 9.5 6 12 3Z"/></svg>'
+    + '<span>PHOTO À AJOUTER</span></div>';
+}
+
+/* ---------- Cartes produits ---------- */
+function carte(p, i, source){
+  return '<article class="carte">'
+    + '<div class="carte-photo">' + visuel(p.image, p.nom)
+    + (p.tag ? '<span class="etiquette">'+p.tag+'</span>' : '')
+    + '</div>'
+    + '<h3>'+p.nom+'</h3>'
+    + '<p class="desc">'+p.desc+'</p>'
+    + '<span class="prix">'+p.prix+' DH</span>'
+    + '<button class="btn" data-src="'+source+'" data-i="'+i+'">Découvrir</button>'
+    + '</article>';
+}
+
+document.getElementById('grille-collection').innerHTML =
+  PRODUITS.map((p,i)=>carte(p,i,'c')).join('');
+document.getElementById('grille-nouveautes').innerHTML =
+  NOUVEAUTES.map((p,i)=>carte(p,i,'n')).join('');
+
+document.getElementById('visuel-hero').innerHTML = visuel(VISUELS.hero,'IZARA BEAUTY');
+document.getElementById('visuel-histoire').innerHTML = visuel(VISUELS.histoire,'La marque IZARA');
+document.getElementById('grille-social').innerHTML =
+  POSTS.map(p=>'<div class="tuile-social">'+visuel(p,'Post IZARA')+'</div>').join('');
+
+/* ---------- Liens réseaux et contact ---------- */
+const lienWa = 'https://wa.me/'+CONTACT.whatsapp;
+document.getElementById('flottant').href = lienWa;
+document.getElementById('lien-insta').href  = 'https://instagram.com/'+CONTACT.instagram;
+document.getElementById('lien-tiktok').href = 'https://tiktok.com/@'+CONTACT.tiktok;
+document.getElementById('lien-insta').textContent  = 'Instagram @'+CONTACT.instagram;
+document.getElementById('lien-tiktok').textContent = 'TikTok @'+CONTACT.tiktok;
+document.getElementById('liens-contact').innerHTML =
+    '<li><a href="'+lienWa+'" target="_blank" rel="noopener">WhatsApp '+CONTACT.telephone+'</a></li>'
+  + '<li><a href="tel:'+CONTACT.telephone+'">Téléphone '+CONTACT.telephone+'</a></li>'
+  + '<li><a href="https://instagram.com/'+CONTACT.instagram+'" target="_blank" rel="noopener">Instagram @'+CONTACT.instagram+'</a></li>'
+  + '<li><a href="https://tiktok.com/@'+CONTACT.tiktok+'" target="_blank" rel="noopener">TikTok @'+CONTACT.tiktok+'</a></li>';
+document.getElementById('annee').textContent = new Date().getFullYear();
+
+/* ---------- Liste déroulante du formulaire ---------- */
+const TOUS = PRODUITS.concat(NOUVEAUTES);
+document.getElementById('f-produit').innerHTML =
+  TOUS.map(p=>'<option>'+p.nom+'</option>').join('');
+
+/* ---------- FAQ ---------- */
+document.getElementById('liste-faq').innerHTML = FAQ.map(function(f,i){
+  return '<div class="q" open-state="off">'
+    + '<button aria-expanded="false"><span>'+f.q+'</span><span class="plus">+</span></button>'
+    + '<div class="r"><p>'+f.r
+    + (f.aDefinir ? '<br><span class="a-definir">Information à confirmer</span>' : '')
+    + '</p></div></div>';
+}).join('');
+
+document.querySelectorAll('.q button').forEach(function(b){
+  b.addEventListener('click', function(){
+    const bloc = b.parentElement, rep = bloc.querySelector('.r');
+    const ouvert = bloc.getAttribute('open-state') === 'on';
+    bloc.setAttribute('open-state', ouvert ? 'off' : 'on');
+    b.setAttribute('aria-expanded', ouvert ? 'false' : 'true');
+    rep.style.maxHeight = ouvert ? null : rep.scrollHeight + 'px';
+  });
+});
+
+/* ---------- Menu mobile ---------- */
+const menu = document.getElementById('menu');
+document.getElementById('btn-menu').addEventListener('click', ()=>menu.classList.toggle('on'));
+menu.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>menu.classList.remove('on')));
+
+/* ---------- Fiche produit ---------- */
+const fiche = document.getElementById('fiche');
+const voile = document.getElementById('voile');
+let produitOuvert = null;
+
+document.addEventListener('click', function(e){
+  const b = e.target.closest('button[data-i]');
+  if(!b) return;
+  const liste = b.dataset.src === 'c' ? PRODUITS : NOUVEAUTES;
+  produitOuvert = liste[+b.dataset.i];
+  document.getElementById('fiche-photo').innerHTML = visuel(produitOuvert.image, produitOuvert.nom);
+  document.getElementById('fiche-nom').textContent  = produitOuvert.nom;
+  document.getElementById('fiche-prix').textContent = produitOuvert.prix + ' DH';
+  document.getElementById('fiche-desc').textContent = produitOuvert.desc;
+  fiche.classList.add('on'); voile.classList.add('on');
+});
+
+function fermerTout(){
+  fiche.classList.remove('on');
+  document.getElementById('panier').classList.remove('on');
+  voile.classList.remove('on');
+}
+document.getElementById('fermer-fiche').addEventListener('click', fermerTout);
+voile.addEventListener('click', fermerTout);
+document.addEventListener('keydown', e=>{ if(e.key === 'Escape') fermerTout(); });
+
+/* ---------- Panier ---------- */
+let panier = [];
+const corps = document.getElementById('panier-corps');
+
+function majPanier(){
+  const n = panier.reduce((s,l)=>s+l.qte, 0);
+  const total = panier.reduce((s,l)=>s+l.qte*l.prix, 0);
+  const pastille = document.getElementById('compteur');
+  pastille.textContent = n;
+  pastille.classList.toggle('on', n > 0);
+  document.getElementById('panier-total').textContent = total + ' DH';
+
+  corps.innerHTML = panier.length === 0
+    ? '<p class="panier-vide">Ton panier est vide.<br>Ajoute un produit depuis la collection.</p>'
+    : panier.map(function(l,i){
+        return '<div class="ligne">'
+          + '<div class="mini">'+visuel(l.image, l.nom)+'</div>'
+          + '<div class="info"><strong>'+l.nom+'</strong><small>'+l.prix+' DH</small>'
+          + '<div class="qte"><button data-m="'+i+'">−</button><span>'+l.qte+'</span><button data-p="'+i+'">+</button></div>'
+          + '</div></div>';
+      }).join('');
+}
+
+corps.addEventListener('click', function(e){
+  const b = e.target.closest('button');
+  if(!b) return;
+  if(b.dataset.p !== undefined) panier[+b.dataset.p].qte++;
+  if(b.dataset.m !== undefined){
+    const i = +b.dataset.m;
+    panier[i].qte--;
+    if(panier[i].qte <= 0) panier.splice(i,1);
+  }
+  majPanier();
+});
+
+document.getElementById('fiche-ajouter').addEventListener('click', function(){
+  const dedans = panier.find(l=>l.nom === produitOuvert.nom);
+  if(dedans) dedans.qte++;
+  else panier.push({nom:produitOuvert.nom, prix:produitOuvert.prix, image:produitOuvert.image, qte:1});
+  majPanier();
+  fiche.classList.remove('on');
+  document.getElementById('panier').classList.add('on');
+});
+
+document.getElementById('btn-panier').addEventListener('click', function(){
+  document.getElementById('panier').classList.add('on');
+  voile.classList.add('on');
+});
+document.getElementById('fermer-panier').addEventListener('click', fermerTout);
+
+document.getElementById('commander-panier').addEventListener('click', function(){
+  if(panier.length === 0){ alert("Ton panier est vide."); return; }
+  let msg = "Bonjour IZARA BEAUTY, je souhaite commander :\n\n";
+  panier.forEach(l=>{ msg += "• "+l.nom+" ×"+l.qte+" — "+(l.prix*l.qte)+" DH\n"; });
+  msg += "\nTotal produits : "+panier.reduce((s,l)=>s+l.qte*l.prix,0)+" DH";
+  window.open(lienWa+'?text='+encodeURIComponent(msg), '_blank');
+});
+
+majPanier();
+
+/* ---------- Formulaire → WhatsApp ---------- */
+document.getElementById('btn-envoyer').addEventListener('click', function(){
+  const v = id => document.getElementById(id).value.trim();
+  if(!v('f-nom') || !v('f-prenom') || !v('f-tel') || !v('f-ville')){
+    alert("Merci de remplir au minimum : nom, prénom, téléphone et ville.");
+    return;
+  }
+  const msg =
+      "Bonjour IZARA BEAUTY, je souhaite passer commande.\n\n"
+    + "Nom : "      + v('f-nom') + "\n"
+    + "Prénom : "   + v('f-prenom') + "\n"
+    + "Téléphone : "+ v('f-tel') + "\n"
+    + "Ville : "    + v('f-ville') + "\n"
+    + "Adresse : "  + v('f-adresse') + "\n"
+    + "Produit : "  + v('f-produit') + "\n"
+    + "Quantité : " + v('f-qte') + "\n"
+    + (v('f-notes') ? "Notes : " + v('f-notes') : "");
+  window.open(lienWa+'?text='+encodeURIComponent(msg), '_blank');
+});
+</script>
+</body>
+</html>
