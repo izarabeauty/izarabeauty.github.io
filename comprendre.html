@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comprendre la Supply Chain — LogiPath</title>
+<meta name="description" content="Chaîne Supply Chain interactive et grands concepts (JIT, MRP, Incoterms, Bullwhip...) expliqués simplement.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="comprendre">
+<header class="site-header" id="site-header"></header>
+
+<section class="hero" style="padding:56px 0;">
+  <div class="container hero-inner">
+    <p class="eyebrow" style="background:rgba(255,255,255,.12); color:#fff;">🔗 Étape 2 — Comprendre</p>
+    <h1 style="color:#fff;">La chaîne Supply Chain, étape par étape</h1>
+    <p class="lead">Clique sur chaque étape de la chaîne pour découvrir son rôle, ses métiers, ses indicateurs et ses problèmes fréquents.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="flow-track" id="chainTrack"></div>
+    <div class="flow-detail" id="chainDetail"></div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Les 3 flux</p>
+      <h2>Une Supply Chain, ce sont trois flux qui circulent en parallèle</h2>
+    </div>
+    <div class="grid grid-3">
+      <div class="card"><span class="icon">📦</span><h3>Flux physiques</h3><p class="muted">Le mouvement réel des marchandises : matières premières, produits en cours, produits finis.</p></div>
+      <div class="card"><span class="icon">💬</span><h3>Flux d'information</h3><p class="muted">Les commandes, prévisions, factures et données échangées entre tous les acteurs de la chaîne.</p></div>
+      <div class="card"><span class="icon">💰</span><h3>Flux financiers</h3><p class="muted">Les paiements entre clients, entreprises et fournisseurs qui accompagnent chaque transaction.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Les grands concepts</p>
+      <h2>Le vocabulaire que tout professionnel de la Supply Chain doit connaître</h2>
+      <p>Filtre par catégorie, clique sur un concept pour l'ouvrir.</p>
+    </div>
+    <div class="filter-bar" id="conceptFilters">
+      <button class="filter-chip active" data-cat="all">Tous</button>
+      <button class="filter-chip" data-cat="concept">Concepts &amp; méthodes</button>
+      <button class="filter-chip" data-cat="outil">Outils</button>
+    </div>
+    <div class="grid grid-3" id="conceptGrid"></div>
+  </div>
+</section>
+
+<section class="center">
+  <div class="container">
+    <p class="eyebrow">Étape suivante</p>
+    <h2>Tu comprends la chaîne. Découvre maintenant les métiers.</h2>
+    <a href="metiers.html" class="btn btn-primary">Explorer les métiers →</a>
+  </div>
+</section>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+function renderChain(){
+  const track = document.getElementById("chainTrack");
+  const detail = document.getElementById("chainDetail");
+  track.innerHTML = CHAIN_STEPS.map((s,i) => `
+    ${i>0 ? '<div class="flow-arrow">→</div>' : ''}
+    <div class="flow-step" data-id="${s.id}"><span class="icon">${s.icon}</span><h3 style="font-size:1rem;">${s.title}</h3></div>
+  `).join("");
+
+  function open(id){
+    track.querySelectorAll(".flow-step").forEach(x => x.classList.toggle("active", x.dataset.id===id));
+    const s = CHAIN_STEPS.find(x => x.id === id);
+    detail.innerHTML = `
+      <h3>${s.icon} ${s.title}</h3>
+      <p>${s.role}</p>
+      <div class="grid grid-2">
+        <div>
+          <div class="modal-section"><h4>Objectifs</h4><ul>${s.objectifs.map(o=>`<li>${o}</li>`).join("")}</ul></div>
+          <div class="modal-section"><h4>Métiers associés</h4>${s.metiers.map(m=>`<span class="tag">${m}</span>`).join("")}</div>
+          <div class="modal-section"><h4>Compétences nécessaires</h4>${s.competences.map(m=>`<span class="tag">${m}</span>`).join("")}</div>
+        </div>
+        <div>
+          <div class="modal-section"><h4>Indicateurs (KPI)</h4><ul>${s.indicateurs.map(o=>`<li>${o}</li>`).join("")}</ul></div>
+          <div class="modal-section"><h4>Problèmes fréquents</h4><ul>${s.problemes.map(o=>`<li>${o}</li>`).join("")}</ul></div>
+          <div class="modal-section"><h4>Exemple concret</h4><p class="muted">${s.exemple}</p></div>
+        </div>
+      </div>`;
+    detail.classList.add("show");
+  }
+
+  track.querySelectorAll(".flow-step").forEach(el => el.addEventListener("click", () => open(el.dataset.id)));
+
+  const params = new URLSearchParams(location.search);
+  const openId = params.get("open");
+  open(CHAIN_STEPS.some(s=>s.id===openId) ? openId : CHAIN_STEPS[0].id);
+  if(openId) document.getElementById("chainTrack").scrollIntoView({behavior:"smooth", block:"center"});
+}
+
+function renderConcepts(filter){
+  const grid = document.getElementById("conceptGrid");
+  const list = GLOSSARY.filter(g => g.category !== "base" && (filter==="all" || g.category===filter));
+  grid.innerHTML = list.map(g => `
+    <div class="card clickable" data-id="${g.id}">
+      <span class="badge badge-teal">${g.category==="outil"?"Outil":"Concept"}</span>
+      <h3 style="margin-top:8px;">${g.term}</h3>
+      <p class="muted">${g.def}</p>
+    </div>`).join("");
+  grid.querySelectorAll(".card").forEach(c => c.addEventListener("click", () => {
+    const g = GLOSSARY.find(x => x.id === c.dataset.id);
+    openModal(`<h3>${g.term}</h3><p>${g.def}</p><div class="modal-section"><h4>Exemple concret</h4><p class="muted">${g.example}</p></div>`);
+  }));
+}
+
+document.getElementById("conceptFilters").addEventListener("click", (e) => {
+  if(e.target.tagName !== "BUTTON") return;
+  document.querySelectorAll("#conceptFilters .filter-chip").forEach(b=>b.classList.remove("active"));
+  e.target.classList.add("active");
+  renderConcepts(e.target.dataset.cat);
+});
+
+renderChain();
+renderConcepts("all");
+</script>
+</body>
+</html>

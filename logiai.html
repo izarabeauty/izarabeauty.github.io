@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LogiAI — Assistant Supply Chain — LogiPath</title>
+<meta name="description" content="LogiAI, assistant spécialisé en Logistique, Supply Chain, Procurement et carrière, avec un focus sur le Maroc.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="logiai">
+<header class="site-header" id="site-header"></header>
+
+<section style="padding:36px 0 10px;">
+  <div class="container center">
+    <p class="eyebrow">🤖 LogiAI</p>
+    <h1>Ton assistant Supply Chain, spécialisé Maroc</h1>
+    <p class="muted" style="max-width:640px; margin:0 auto;">Pose une question, choisis une action rapide, ou colle ton CV pour un retour instantané.</p>
+  </div>
+</section>
+
+<section style="padding-top:10px;">
+  <div class="container">
+    <div class="chat-wrap">
+      <div class="chat-header">🤖 LogiAI <span style="font-weight:400; font-size:.8rem; opacity:.8;">— version base de connaissances (MVP)</span></div>
+      <div class="chat-log" id="chatLog"></div>
+      <div class="chat-quick" id="chatQuick"></div>
+      <form class="chat-input-row" id="chatForm">
+        <input type="text" id="chatInput" placeholder="Écris ta question ici..." autocomplete="off">
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+      </form>
+    </div>
+    <div class="source-note" style="max-width:820px; margin:20px auto 0;">
+      LogiAI est une version MVP basée sur une base de connaissances structurée (métiers, glossaire, entreprises du site), pas un modèle de langage connecté en direct. Il ne fabrique jamais d'entreprise, d'offre d'emploi, de salaire ou de réglementation, et il t'oriente vers les sources officielles quand c'est pertinent. L'architecture est prête pour brancher un vrai modèle IA via une API backend sécurisée dans une version future.
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/logiai.js"></script>
+<script>initLogiAI();</script>
+</body>
+</html>

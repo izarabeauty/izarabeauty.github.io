@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mon Parcours — LogiPath</title>
+<meta name="description" content="Renseigne ton profil et reçois des recommandations indicatives : métiers, compétences prioritaires, entreprises à cibler et plan d'action.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="parcours">
+<header class="site-header" id="site-header"></header>
+
+<section class="hero" style="padding:56px 0;">
+  <div class="container hero-inner">
+    <p class="eyebrow" style="background:rgba(255,255,255,.12); color:#fff;">🚀 Mon Parcours</p>
+    <h1 style="color:#fff;">Construis ton plan d'action personnalisé</h1>
+    <p class="lead">Réponds à quelques questions sur ton profil pour recevoir des recommandations indicatives de métiers, compétences et entreprises à cibler.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="two-col">
+      <div>
+        <h2>Mon profil</h2>
+        <form id="profileForm"></form>
+      </div>
+      <div class="card">
+        <h3>ℹ️ Comment ça marche ?</h3>
+        <p class="muted">Ce n'est pas un algorithme magique : ce sont des règles simples qui croisent tes réponses avec les données du site (métiers, compétences, entreprises) pour te proposer un point de départ. Les résultats restent <strong>indicatifs</strong> — à toi d'affiner avec LogiAI et tes propres recherches.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Résultat</p>
+      <h2>Mes recommandations</h2>
+    </div>
+    <div id="recoResult"><p class="muted center">Remplis le formulaire ci-dessus pour voir apparaître tes recommandations ici.</p></div>
+  </div>
+</section>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/parcours.js"></script>
+<script>
+renderProfileForm();
+restoreProfile();
+</script>
+</body>
+</html>

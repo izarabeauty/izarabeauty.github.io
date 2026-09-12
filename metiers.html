@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les métiers de la Supply Chain — LogiPath</title>
+<meta name="description" content="Cartographie interactive des métiers de la Supply Chain, Achats, Logistique, Transport et Data au Maroc : missions, études, compétences, salaire indicatif et roadmap.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="metiers">
+<header class="site-header" id="site-header"></header>
+
+<section class="hero" style="padding:56px 0;">
+  <div class="container hero-inner">
+    <p class="eyebrow" style="background:rgba(255,255,255,.12); color:#fff;">🗺️ Étape 3 — Explorer les métiers</p>
+    <h1 style="color:#fff;">Quel métier de la Supply Chain te correspond ?</h1>
+    <p class="lead">22 métiers, 5 familles. Clique sur une fiche pour découvrir le quotidien du métier, les compétences requises et la roadmap complète pour y accéder.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="filter-bar" id="jobFilters">
+      <button class="filter-chip active" data-cat="all">Tous les métiers</button>
+    </div>
+    <div class="grid grid-3" id="jobGrid"></div>
+  </div>
+</section>
+
+<section class="center" style="background:var(--bg-alt);">
+  <div class="container">
+    <p class="eyebrow">Pas encore sûr de ton choix ?</p>
+    <h2>Laisse LogiAI t'aider à cibler un métier selon ton profil</h2>
+    <a href="logiai.html" class="btn btn-primary">🎯 Quel métier choisir ?</a>
+  </div>
+</section>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+function renderFilters(){
+  const bar = document.getElementById("jobFilters");
+  JOB_CATEGORIES.forEach(c => {
+    const b = document.createElement("button");
+    b.className = "filter-chip"; b.dataset.cat = c.id; b.textContent = `${c.icon} ${c.label}`;
+    bar.appendChild(b);
+  });
+  bar.addEventListener("click", (e) => {
+    if(e.target.tagName !== "BUTTON") return;
+    bar.querySelectorAll(".filter-chip").forEach(b=>b.classList.remove("active"));
+    e.target.classList.add("active");
+    renderGrid(e.target.dataset.cat);
+  });
+}
+
+function renderGrid(filter){
+  const grid = document.getElementById("jobGrid");
+  const list = JOBS.filter(j => filter==="all" || j.category===filter);
+  grid.innerHTML = list.map(j => {
+    const cat = JOB_CATEGORIES.find(c=>c.id===j.category);
+    return `<div class="card clickable" data-id="${j.id}">
+      <span class="icon">${cat.icon}</span>
+      <span class="badge badge-teal">${cat.label}</span>
+      <h3 style="margin-top:8px;">${j.title}</h3>
+      <p class="muted">${j.summary}</p>
+    </div>`;
+  }).join("");
+  grid.querySelectorAll(".card").forEach(c => c.addEventListener("click", () => openJob(c.dataset.id)));
+}
+
+function companyNames(ids){
+  return ids.map(id => { const c = COMPANIES.find(x=>x.id===id); return c ? c.name : null; }).filter(Boolean);
+}
+
+function openJob(id){
+  const j = JOBS.find(x => x.id === id);
+  if(!j) return;
+  const cat = JOB_CATEGORIES.find(c=>c.id===j.category);
+  openModal(`
+    <span class="badge badge-teal">${cat.icon} ${cat.label}</span>
+    <h3 style="margin-top:10px;">${j.title}</h3>
+    <p>${j.summary}</p>
+
+    <div class="modal-section"><h4>Une journée type</h4><ul>${j.dailyLife.map(d=>`<li>${d}</li>`).join("")}</ul></div>
+    <div class="modal-section"><h4>Études</h4><p class="muted">${j.education}</p></div>
+
+    <div class="grid grid-2">
+      <div class="modal-section"><h4>Compétences techniques</h4>${j.hardSkills.map(s=>`<span class="tag">${s}</span>`).join("")}</div>
+      <div class="modal-section"><h4>Soft skills</h4>${j.softSkills.map(s=>`<span class="tag">${s}</span>`).join("")}</div>
+      <div class="modal-section"><h4>Logiciels</h4>${j.tools.map(s=>`<span class="tag">${s}</span>`).join("")}</div>
+      <div class="modal-section"><h4>Langues</h4>${j.languages.map(s=>`<span class="tag">${s}</span>`).join("")}</div>
+    </div>
+
+    <div class="modal-section"><h4>Premier poste possible</h4><p class="muted">${j.firstJob}</p></div>
+    <div class="modal-section"><h4>Évolution de carrière</h4><p class="muted">${j.evolution}</p></div>
+    <div class="modal-section"><h4>Entreprises susceptibles de recruter ce profil</h4>${companyNames(j.companies).map(n=>`<span class="tag">${n}</span>`).join("")}</div>
+    <div class="modal-section"><h4>Comment obtenir son premier stage</h4><p class="muted">${j.internshipTip}</p></div>
+    <div class="modal-section"><h4>Du niveau débutant au niveau confirmé</h4><p class="muted">${j.beginnerToConfirmed}</p></div>
+
+    <div class="source-note">💰 ${j.salaryNote}</div>
+
+    <div class="modal-section">
+      <h4>🗺️ Comment devenir ${j.title} ?</h4>
+      <ol class="timeline">
+        ${j.roadmap.map((step,i) => `<li><span class="step-num">Étape ${i+1}</span><br>${step}</li>`).join("")}
+      </ol>
+    </div>
+    <a href="logiai.html" class="btn btn-outline btn-sm">🤖 Demander plus de détails à LogiAI</a>
+  `);
+}
+
+renderFilters();
+renderGrid("all");
+
+const params = new URLSearchParams(location.search);
+const openId = params.get("open");
+if(openId && JOBS.some(j=>j.id===openId)) openJob(openId);
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La logistique au Maroc 🇲🇦 — LogiPath</title>
+<meta name="description" content="Écosystème logistique et industriel marocain : secteurs clés, pôles logistiques, ports et zones industrielles.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="maroc">
+<header class="site-header" id="site-header"></header>
+
+<section class="hero" style="padding:56px 0;">
+  <div class="container hero-inner">
+    <p class="eyebrow" style="background:rgba(255,255,255,.12); color:#fff;">🇲🇦 La logistique au Maroc</p>
+    <h1 style="color:#fff;">L'écosystème logistique et industriel marocain</h1>
+    <p class="lead">Le Maroc s'est positionné comme un hub logistique régional grâce à des investissements majeurs en infrastructures et à une industrialisation rapide.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Secteurs clés</p>
+      <h2>Les grands secteurs qui font vivre la Supply Chain marocaine</h2>
+    </div>
+    <div class="grid grid-4">
+      <div class="card"><span class="icon">🚗</span><h3>Automobile</h3><p class="muted">Un des premiers secteurs exportateurs du pays, autour de Tanger et Kénitra.</p></div>
+      <div class="card"><span class="icon">✈️</span><h3>Aéronautique</h3><p class="muted">Filière en croissance, concentrée notamment autour de Casablanca.</p></div>
+      <div class="card"><span class="icon">🌾</span><h3>Agroalimentaire</h3><p class="muted">Secteur historique, fortement lié à l'exportation de produits frais.</p></div>
+      <div class="card"><span class="icon">💊</span><h3>Pharmaceutique</h3><p class="muted">Industrie exigeante en traçabilité et qualité logistique.</p></div>
+      <div class="card"><span class="icon">🛒</span><h3>Retail</h3><p class="muted">Grande distribution en développement continu (Marjane, Label'Vie...).</p></div>
+      <div class="card"><span class="icon">📱</span><h3>E-commerce</h3><p class="muted">Secteur émergent qui transforme la logistique du dernier kilomètre.</p></div>
+      <div class="card"><span class="icon">⚡</span><h3>Énergie</h3><p class="muted">Secteur stratégique avec des enjeux logistiques spécifiques (approvisionnement, stockage).</p></div>
+      <div class="card"><span class="icon">🌍</span><h3>Import / Export</h3><p class="muted">Activité structurante autour des grands ports du Royaume.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Carte interactive</p>
+      <h2>Les principaux pôles logistiques et industriels</h2>
+      <p>Clique sur un pôle pour en savoir plus.</p>
+    </div>
+    <div class="grid grid-3" id="hubGrid"></div>
+    <div class="source-note">📍 Carte simplifiée à but pédagogique — non exhaustive. Les données précises d'infrastructures évoluent régulièrement : se référer aux sites officiels (Agence Nationale des Ports, ministères concernés) pour les informations à jour.</div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Ports &amp; infrastructures</p>
+      <h2>Repères sur les infrastructures logistiques marocaines</h2>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>🚢 Ports</h3>
+        <p class="muted">Le Maroc dispose de plusieurs ports de commerce, dont Tanger Med — un des plus grands ports à conteneurs d'Afrique — ainsi que les ports de Casablanca, Agadir, Jorf Lasfar et Safi.</p>
+      </div>
+      <div class="card">
+        <h3>🏗️ Zones industrielles &amp; logistiques</h3>
+        <p class="muted">Plusieurs zones franches et parcs industriels structurent l'activité, notamment autour de Tanger, Kénitra et Casablanca, accueillant automobile, aéronautique et logistique contractuelle.</p>
+      </div>
+    </div>
+    <div class="source-note">ℹ️ Information indicative — dernière relecture éditoriale : <span id="hubDate"></span>. Pour toute donnée officielle (statistiques, capacités portuaires, nouveaux projets), consulter les sites institutionnels concernés.</div>
+  </div>
+</section>
+
+<section class="center">
+  <div class="container">
+    <p class="eyebrow">Aller plus loin</p>
+    <h2>Découvre les entreprises qui recrutent au Maroc</h2>
+    <a href="entreprises.html" class="btn btn-primary">Voir les entreprises →</a>
+  </div>
+</section>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+document.getElementById("hubDate").textContent = VERIFIED_DATE;
+
+function renderHubs(){
+  const grid = document.getElementById("hubGrid");
+  grid.innerHTML = MOROCCO_HUBS.map(h => `
+    <div class="map-hub" data-id="${h.id}">
+      <span class="badge badge-teal">${h.type}</span>
+      <h3 style="margin-top:8px;">${h.name}</h3>
+      <p class="muted" style="font-size:.85rem;">${h.region}</p>
+    </div>`).join("");
+  grid.querySelectorAll(".map-hub").forEach(c => c.addEventListener("click", () => {
+    const h = MOROCCO_HUBS.find(x=>x.id===c.dataset.id);
+    openModal(`<h3>${h.name}</h3><span class="badge badge-teal">${h.type}</span> · <span class="muted">${h.region}</span>
+      <p style="margin-top:14px;">${h.desc}</p>
+      <div class="modal-section"><h4>Secteurs présents</h4>${h.sectors.map(s=>`<span class="tag">${s}</span>`).join("")}</div>`);
+  }));
+}
+renderHubs();
+</script>
+</body>
+</html>

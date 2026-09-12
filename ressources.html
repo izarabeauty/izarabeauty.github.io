@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ressources — LogiPath</title>
+<meta name="description" content="Glossaire complet, livres, certifications, outils et études de cas pour approfondir la Logistique et la Supply Chain.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="ressources">
+<header class="site-header" id="site-header"></header>
+
+<section class="hero" style="padding:56px 0;">
+  <div class="container hero-inner">
+    <p class="eyebrow" style="background:rgba(255,255,255,.12); color:#fff;">📚 Ressources</p>
+    <h1 style="color:#fff;">Glossaire, livres, certifications &amp; outils</h1>
+    <p class="lead">Une bibliothèque pour approfondir : cherche un terme précis, ou parcours les ressources recommandées.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Glossaire complet</p>
+      <h2>Tous les termes de la Supply Chain</h2>
+    </div>
+    <div style="max-width:420px; margin:0 auto 24px;">
+      <input type="text" id="glossarySearch" placeholder="Rechercher un terme (ex: MRP, FIFO...)">
+    </div>
+    <div class="grid grid-3" id="glossaryGrid"></div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="container">
+    <div class="grid grid-3">
+      <div>
+        <h3>📖 Livres recommandés</h3>
+        <div id="booksList"></div>
+      </div>
+      <div>
+        <h3>🎓 Certifications reconnues</h3>
+        <div id="certsList"></div>
+      </div>
+      <div>
+        <h3>🛠️ Outils du métier</h3>
+        <div id="toolsList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Études de cas &amp; questions d'entretien</p>
+      <h2>Pratiquer avant de postuler</h2>
+    </div>
+    <div class="grid grid-2">
+      <div>
+        <h3>🧠 Études de cas</h3>
+        <div id="casesList"></div>
+      </div>
+      <div>
+        <h3>🎤 Questions d'entretien</h3>
+        <div id="interviewList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+function renderGlossary(filter){
+  const grid = document.getElementById("glossaryGrid");
+  const q = (filter||"").toLowerCase();
+  const list = GLOSSARY.filter(g => !q || g.term.toLowerCase().includes(q) || g.def.toLowerCase().includes(q));
+  grid.innerHTML = list.map(g => `
+    <div class="card clickable" id="glossary-${g.id}" data-id="${g.id}">
+      <h3 style="font-size:1.05rem;">${g.term}</h3>
+      <p class="muted" style="font-size:.9rem;">${g.def}</p>
+    </div>`).join("") || `<p class="muted">Aucun résultat. <a href="logiai.html">Demande à LogiAI</a>.</p>`;
+  grid.querySelectorAll(".card").forEach(c => c.addEventListener("click", () => {
+    const g = GLOSSARY.find(x=>x.id===c.dataset.id);
+    openModal(`<h3>${g.term}</h3><p>${g.def}</p><div class="modal-section"><h4>Exemple concret</h4><p class="muted">${g.example}</p></div>`);
+  }));
+}
+document.getElementById("glossarySearch").addEventListener("input", (e) => renderGlossary(e.target.value));
+
+function renderLists(){
+  document.getElementById("booksList").innerHTML = RESOURCES.books.map(b => `<div class="card" style="margin-bottom:10px;"><strong>${b.title}</strong><br><span class="muted">${b.authors}</span><p class="muted" style="font-size:.85rem;">${b.note}</p></div>`).join("");
+  document.getElementById("certsList").innerHTML = RESOURCES.certifications.map(c => `<div class="card" style="margin-bottom:10px;"><strong>${c.name}</strong><p class="muted" style="font-size:.85rem;">${c.note}</p></div>`).join("");
+  document.getElementById("toolsList").innerHTML = `<div class="card">${RESOURCES.tools.map(t=>`<span class="tag">${t}</span>`).join("")}</div>`;
+  document.getElementById("casesList").innerHTML = RESOURCES.caseStudies.map(c => `<div class="card" style="margin-bottom:10px;"><strong>${c.title}</strong><p class="muted">${c.desc}</p></div>`).join("");
+  document.getElementById("interviewList").innerHTML = INTERVIEW_QUESTIONS.map(q => `<div class="card" style="margin-bottom:10px;"><strong>${q.q}</strong><p class="muted" style="font-size:.85rem;">${q.tip}</p></div>`).join("");
+}
+
+renderGlossary("");
+renderLists();
+
+const params = new URLSearchParams(location.search);
+const openId = params.get("open");
+if(openId && openId.startsWith("glossary-")){
+  const id = openId.replace("glossary-","");
+  const g = GLOSSARY.find(x=>x.id===id);
+  if(g){ document.getElementById(`glossary-${id}`)?.scrollIntoView({behavior:"smooth", block:"center"}); }
+}
+</script>
+</body>
+</html>

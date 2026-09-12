@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comment postuler — LogiPath</title>
+<meta name="description" content="Guide d'insertion professionnelle : CV Supply Chain, LinkedIn, candidature spontanée, entretien et études de cas.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="postuler">
+<header class="site-header" id="site-header"></header>
+
+<section class="hero" style="padding:56px 0;">
+  <div class="container hero-inner">
+    <p class="eyebrow" style="background:rgba(255,255,255,.12); color:#fff;">📩 Étape 6 — Postuler</p>
+    <h1 style="color:#fff;">Comment décrocher son premier stage ou emploi ?</h1>
+    <p class="lead">Un guide concret pour construire un CV percutant, un profil LinkedIn efficace, et réussir ses entretiens.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">📄 CV Supply Chain</p>
+      <h2>Structurer un CV qui capte l'attention en 10 secondes</h2>
+    </div>
+    <div class="grid grid-3">
+      <div class="card"><span class="icon">🧱</span><h3>Structure</h3><ul class="muted"><li>Titre clair (ex: « Étudiant en Supply Chain — recherche stage »)</li><li>Résumé de 2-3 lignes</li><li>Expériences avec résultats chiffrés</li><li>Compétences techniques &amp; logiciels</li><li>Langues avec niveau réel</li></ul></div>
+      <div class="card"><span class="icon">✅</span><h3>Ce qu'il faut mettre en avant</h3><ul class="muted"><li>Maîtrise d'Excel/Power BI/ERP</li><li>Projets académiques concrets</li><li>Résultats mesurables (« -15% de coût », « +20% de précision »)</li><li>Mots-clés du métier visé</li></ul></div>
+      <div class="card"><span class="icon">🚫</span><h3>Erreurs à éviter</h3><ul class="muted"><li>CV trop long (1 page pour un profil junior)</li><li>Compétences vagues sans preuve</li><li>Fautes d'orthographe</li><li>Photo ou mise en page trop chargée</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">💼 LinkedIn</p>
+      <h2>Construire un profil qui attire les recruteurs</h2>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Éléments clés du profil</h3>
+        <ul class="muted">
+          <li><strong>Titre :</strong> mentionner le métier visé, pas juste « étudiant »</li>
+          <li><strong>Résumé :</strong> 3-4 phrases sur ton parcours et ton objectif</li>
+          <li><strong>Compétences :</strong> lister les compétences techniques du métier visé (voir la page Compétences)</li>
+          <li><strong>Photo professionnelle</strong> et bannière soignée</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Networking</h3>
+        <ul class="muted">
+          <li>Suivre les entreprises ciblées (voir la page Entreprises)</li>
+          <li>Contacter des professionnels du métier visé avec un message personnalisé et court</li>
+          <li>Commenter et partager du contenu Supply Chain pour se rendre visible</li>
+          <li>Rejoindre des groupes/associations étudiantes liées à la logistique</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">📮 Candidature spontanée</p>
+      <h2>Comment candidater sans offre publiée ?</h2>
+    </div>
+    <div class="grid grid-3">
+      <div class="card"><span class="icon">🔍</span><h3>1. Identifier la bonne personne</h3><p class="muted">Cherchez sur LinkedIn le responsable RH ou le manager Supply Chain de l'entreprise ciblée plutôt que d'envoyer à une adresse générique.</p></div>
+      <div class="card"><span class="icon">✉️</span><h3>2. Construire son message</h3><p class="muted">Un message court, personnalisé, expliquant pourquoi cette entreprise précisément, et ce que vous pouvez apporter.</p></div>
+      <div class="card"><span class="icon">🔁</span><h3>3. Relancer avec tact</h3><p class="muted">Une relance polie après 1-2 semaines sans réponse est normale et bien perçue si elle reste courtoise.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">🎤 Entretien</p>
+      <h2>Questions fréquentes en entretien Supply Chain</h2>
+    </div>
+    <div id="interviewAccordion"></div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">🧠 Étude de cas</p>
+      <h2>Mets-toi en situation</h2>
+    </div>
+    <div class="grid grid-2" id="caseStudies"></div>
+    <div class="center" style="margin-top:20px;">
+      <a href="simulateur.html" class="btn btn-primary">🎮 Essayer le simulateur complet</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+function renderInterview(){
+  const box = document.getElementById("interviewAccordion");
+  box.innerHTML = INTERVIEW_QUESTIONS.map(q => `
+    <div class="accordion-item">
+      <div class="accordion-head"><span>${q.q}</span><span class="chev">▾</span></div>
+      <div class="accordion-body"><p class="muted">${q.tip}</p></div>
+    </div>`).join("");
+  initAccordions(box);
+}
+function renderCases(){
+  const box = document.getElementById("caseStudies");
+  box.innerHTML = RESOURCES.caseStudies.map(c => `
+    <div class="card"><h3>${c.title}</h3><p class="muted">${c.desc}</p></div>`).join("");
+}
+renderInterview();
+renderCases();
+</script>
+</body>
+</html>

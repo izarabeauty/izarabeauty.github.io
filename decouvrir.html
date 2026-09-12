@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La logistique de zéro — LogiPath</title>
+<meta name="description" content="Comprends la logistique à partir de zéro avec un exemple simple : comment une bouteille d'eau arrive du fournisseur au supermarché.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="decouvrir">
+<header class="site-header" id="site-header"></header>
+
+<section class="hero" style="padding:56px 0;">
+  <div class="container hero-inner">
+    <p class="eyebrow" style="background:rgba(255,255,255,.12); color:#fff;">🌱 Étape 1 — La logistique de zéro</p>
+    <h1 style="color:#fff;">C'est quoi la logistique ?</h1>
+    <p class="lead">Aucune base requise. On part d'un exemple du quotidien pour comprendre, étape par étape, ce qui se cache derrière un simple produit en rayon.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Exemple concret</p>
+      <h2>Comment une bouteille d'eau arrive-t-elle du fournisseur jusqu'au supermarché ?</h2>
+      <p>Clique sur chaque étape pour découvrir ce qui se passe réellement.</p>
+    </div>
+    <div class="flow-track" id="flowTrack"></div>
+    <div class="flow-detail" id="flowDetail"></div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Le vocabulaire de base</p>
+      <h2>10 mots à connaître avant d'aller plus loin</h2>
+      <p>Pas de jargon universitaire : une définition simple, un exemple concret pour chaque terme.</p>
+    </div>
+    <div class="grid grid-3" id="baseTerms"></div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">🧠 Mini quiz</p>
+      <h2>Tu as tout suivi ?</h2>
+      <p>3 questions pour vérifier ta compréhension — sans note, juste pour t'entraîner.</p>
+    </div>
+    <div class="quiz-box" id="quizBox" style="max-width:640px; margin:0 auto;"></div>
+  </div>
+</section>
+
+<section class="center">
+  <div class="container">
+    <p class="eyebrow">Étape suivante</p>
+    <h2>Prêt à aller plus loin ?</h2>
+    <p class="muted">Découvre maintenant la chaîne Supply Chain complète, avec les concepts utilisés par les professionnels.</p>
+    <a href="comprendre.html" class="btn btn-primary">Comprendre la Supply Chain →</a>
+  </div>
+</section>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+function renderFlow(){
+  const track = document.getElementById("flowTrack");
+  const detail = document.getElementById("flowDetail");
+  track.innerHTML = ZERO_FLOW.map((s,i) => `
+    ${i>0 ? '<div class="flow-arrow">→</div>' : ''}
+    <div class="flow-step" data-id="${s.id}"><span class="icon">${s.icon}</span><h3 style="font-size:1rem;">${s.title}</h3></div>
+  `).join("");
+
+  track.querySelectorAll(".flow-step").forEach(el => {
+    el.addEventListener("click", () => {
+      track.querySelectorAll(".flow-step").forEach(x => x.classList.remove("active"));
+      el.classList.add("active");
+      const step = ZERO_FLOW.find(s => s.id === el.dataset.id);
+      detail.innerHTML = `<h3>${step.icon} ${step.title}</h3><p>${step.text}</p>`;
+      detail.classList.add("show");
+    });
+  });
+  track.querySelector(".flow-step").click();
+}
+
+function renderBaseTerms(){
+  const ids = ["logistique","supply-chain","achats","approvisionnement","stocks","entrepot","transport","distribution","planification","procurement"];
+  const box = document.getElementById("baseTerms");
+  box.innerHTML = ids.map(id => {
+    const g = GLOSSARY.find(x => x.id === id);
+    return `<div class="card"><h3>${g.term}</h3><p class="muted">${g.def}</p><p style="font-size:.85rem;"><strong>Exemple :</strong> ${g.example}</p></div>`;
+  }).join("");
+}
+
+const QUIZ = [
+  { q: "Que représente le « Stock » dans la chaîne de la bouteille d'eau ?", options: [
+      "Les bouteilles vides et emballages qui attendent d'être utilisés", "Le magasin qui vend le produit", "Le camion qui transporte la marchandise"
+    ], correct: 0 },
+  { q: "Quelle est la différence principale entre Logistique et Supply Chain ?", options: [
+      "Il n'y a aucune différence", "La logistique gère les flux physiques ; la Supply Chain englobe toute la chaîne (achats, production, logistique...)", "La Supply Chain ne concerne que le transport"
+    ], correct: 1 },
+  { q: "Dans l'exemple de la bouteille d'eau, quelle étape vient juste avant la « Distribution » ?", options: [
+      "Le Fournisseur", "L'Entrepôt puis le Transport", "Le Client"
+    ], correct: 1 }
+];
+
+function renderQuiz(){
+  const box = document.getElementById("quizBox");
+  box.innerHTML = QUIZ.map((item, qi) => `
+    <div style="margin-bottom:24px;">
+      <p style="font-weight:600;">${qi+1}. ${item.q}</p>
+      ${item.options.map((o,oi) => `<button class="quiz-option" data-q="${qi}" data-o="${oi}">${o}</button>`).join("")}
+    </div>
+  `).join("");
+  box.querySelectorAll(".quiz-option").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const qi = +btn.dataset.q, oi = +btn.dataset.o;
+      const group = box.querySelectorAll(`[data-q="${qi}"]`);
+      group.forEach(b => b.disabled = true);
+      if(oi === QUIZ[qi].correct){ btn.classList.add("correct"); }
+      else { btn.classList.add("wrong"); group[QUIZ[qi].correct].classList.add("correct"); }
+    });
+  });
+}
+
+renderFlow();
+renderBaseTerms();
+renderQuiz();
+</script>
+</body>
+</html>
