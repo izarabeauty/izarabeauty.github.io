@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entreprises — LogiPath</title>
+<meta name="description" content="Base structurée d'entreprises marocaines, internationales et publiques recrutant en Supply Chain, Logistique, Achats et Transport au Maroc.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="entreprises">
+<header class="site-header" id="site-header"></header>
+
+<section class="hero" style="padding:56px 0;">
+  <div class="container hero-inner">
+    <p class="eyebrow" style="background:rgba(255,255,255,.12); color:#fff;">🏢 Entreprises</p>
+    <h1 style="color:#fff;">Qui recrute en Supply Chain au Maroc ?</h1>
+    <p class="lead">Une sélection d'entreprises internationales, marocaines et publiques actives dans la Supply Chain. Informations générales à vérifier sur le site officiel avant toute candidature.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="filter-bar" id="companyFilters">
+      <button class="filter-chip active" data-cat="all">Toutes</button>
+    </div>
+    <div class="grid grid-3" id="companyGrid"></div>
+    <div class="source-note">ℹ️ Informations générales compilées à partir de sources publiques, dernière vérification : <span id="cVerified"></span>. Aucune offre d'emploi, salaire ou donnée spécifique n'est inventé — utilisez les liens de recherche fournis pour consulter les informations à jour directement chez l'employeur.
+      <br><a class="report-link" href="#" id="reportLink">⚠️ Signaler une information obsolète</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+document.getElementById("cVerified").textContent = VERIFIED_DATE;
+document.getElementById("reportLink").addEventListener("click", (e) => {
+  e.preventDefault();
+  openModal(`<h3>⚠️ Signaler une information obsolète</h3>
+    <p class="muted">Le tableau de bord administrateur (à venir) permettra de corriger directement les fiches entreprises signalées par les utilisateurs. Pour l'instant, cette action est symbolique dans le MVP.</p>`);
+});
+
+function jobTitles(ids){
+  return ids.map(id => { const j = JOBS.find(x=>x.id===id); return j ? j.title : null; }).filter(Boolean);
+}
+function searchLinks(name){
+  const q = encodeURIComponent(name + " carrières Maroc");
+  const li = encodeURIComponent(name);
+  return {
+    google: `https://www.google.com/search?q=${q}`,
+    linkedin: `https://www.linkedin.com/jobs/search/?keywords=${li}&location=Maroc`
+  };
+}
+
+function renderFilters(){
+  const bar = document.getElementById("companyFilters");
+  COMPANY_CATEGORIES.forEach(c => {
+    const b = document.createElement("button");
+    b.className = "filter-chip"; b.dataset.cat = c.id; b.textContent = `${c.icon} ${c.label}`;
+    bar.appendChild(b);
+  });
+  bar.addEventListener("click", (e) => {
+    if(e.target.tagName !== "BUTTON") return;
+    bar.querySelectorAll(".filter-chip").forEach(b=>b.classList.remove("active"));
+    e.target.classList.add("active");
+    renderGrid(e.target.dataset.cat);
+  });
+}
+
+function renderGrid(filter){
+  const grid = document.getElementById("companyGrid");
+  const list = COMPANIES.filter(c => filter==="all" || c.category===filter);
+  grid.innerHTML = list.map(c => {
+    const cat = COMPANY_CATEGORIES.find(x=>x.id===c.category);
+    return `<div class="card clickable" data-id="${c.id}">
+      <span class="badge badge-teal">${cat.icon} ${cat.label}</span>
+      <h3 style="margin-top:8px;">${c.name}</h3>
+      <p class="muted" style="font-size:.85rem;">${c.sector} — ${c.location}</p>
+      <p class="muted">${c.activity}</p>
+    </div>`;
+  }).join("");
+  grid.querySelectorAll(".card").forEach(c => c.addEventListener("click", () => openCompany(c.dataset.id)));
+}
+
+function openCompany(id){
+  const c = COMPANIES.find(x => x.id === id);
+  if(!c) return;
+  const cat = COMPANY_CATEGORIES.find(x=>x.id===c.category);
+  const links = searchLinks(c.name);
+  openModal(`
+    <span class="badge badge-teal">${cat.icon} ${cat.label}</span>
+    <h3 style="margin-top:10px;">${c.name}</h3>
+    <p class="muted">${c.sector} — ${c.location}</p>
+    <p>${c.activity}</p>
+
+    <div class="modal-section"><h4>Métiers Supply Chain possibles</h4>${jobTitles(c.jobs).map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+    <div class="modal-section"><h4>Types de stages</h4>${c.stageTypes.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+    <div class="modal-section"><h4>Profils recherchés</h4>${c.profiles.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+    <div class="modal-section"><h4>Compétences recherchées</h4>${c.skills.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+    <div class="modal-section"><h4>Conseil pour candidater</h4><p class="muted">${c.tips}</p></div>
+
+    <div class="modal-section">
+      <h4>Rechercher les offres actuelles</h4>
+      <a href="${links.google}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">🔎 Rechercher sur Google</a>
+      <a href="${links.linkedin}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">💼 Rechercher sur LinkedIn</a>
+    </div>
+    <div class="source-note">Information générale, vérifiée le ${VERIFIED_DATE} à partir de sources publiques. Consultez toujours le site officiel de l'entreprise avant de candidater.</div>
+  `);
+}
+
+renderFilters();
+renderGrid("all");
+
+const params = new URLSearchParams(location.search);
+const openId = params.get("open");
+if(openId && COMPANIES.some(c=>c.id===openId)) openCompany(openId);
+</script>
+</body>
+</html>

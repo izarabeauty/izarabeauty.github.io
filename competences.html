@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compétences à développer — LogiPath</title>
+<meta name="description" content="Skill map interactive des compétences techniques, managériales et linguistiques pour réussir en Supply Chain.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="competences">
+<header class="site-header" id="site-header"></header>
+
+<section class="hero" style="padding:56px 0;">
+  <div class="container hero-inner">
+    <p class="eyebrow" style="background:rgba(255,255,255,.12); color:#fff;">🧩 Compétences</p>
+    <h1 style="color:#fff;">Quelles compétences développer ?</h1>
+    <p class="lead">Une skill map interactive : pour chaque compétence, son importance, les niveaux de progression, comment l'apprendre et un projet pratique à réaliser.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="filter-bar" id="skillFilters">
+      <button class="filter-chip active" data-cat="technical">💻 Techniques</button>
+      <button class="filter-chip" data-cat="management">🤝 Management</button>
+      <button class="filter-chip" data-cat="languages">🌐 Langues</button>
+    </div>
+    <div class="grid grid-3" id="skillGrid"></div>
+  </div>
+</section>
+
+<section class="center" style="background:var(--bg-alt);">
+  <div class="container">
+    <p class="eyebrow">Aller plus loin</p>
+    <h2>Construis ton plan de développement personnalisé</h2>
+    <a href="parcours.html" class="btn btn-primary">Voir Mon Parcours →</a>
+  </div>
+</section>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+function renderSkills(cat){
+  const grid = document.getElementById("skillGrid");
+  const list = SKILLS[cat];
+  grid.innerHTML = list.map(s => `
+    <div class="card clickable" data-cat="${cat}" data-id="${s.id}">
+      <h3>${s.name}</h3>
+      <p class="muted">${s.why}</p>
+    </div>`).join("");
+  grid.querySelectorAll(".card").forEach(c => c.addEventListener("click", () => {
+    const s = SKILLS[c.dataset.cat].find(x=>x.id===c.dataset.id);
+    openModal(`
+      <h3>${s.name}</h3>
+      <p>${s.why}</p>
+      <div class="modal-section"><h4>🟢 Niveau débutant</h4><p class="muted">${s.beginner}</p></div>
+      <div class="modal-section"><h4>🟠 Niveau intermédiaire</h4><p class="muted">${s.intermediate}</p></div>
+      <div class="modal-section"><h4>🔴 Niveau avancé</h4><p class="muted">${s.advanced}</p></div>
+      <div class="modal-section"><h4>Comment l'apprendre ?</h4><p class="muted">${s.learn}</p></div>
+      <div class="modal-section"><h4>🛠️ Projet pratique à réaliser</h4><p class="muted">${s.project}</p></div>
+    `);
+  }));
+}
+
+document.getElementById("skillFilters").addEventListener("click", (e) => {
+  if(e.target.tagName !== "BUTTON") return;
+  document.querySelectorAll("#skillFilters .filter-chip").forEach(b=>b.classList.remove("active"));
+  e.target.classList.add("active");
+  renderSkills(e.target.dataset.cat);
+});
+
+renderSkills("technical");
+
+const params = new URLSearchParams(location.search);
+const openId = params.get("open");
+if(openId){
+  for(const cat of ["technical","management","languages"]){
+    const s = SKILLS[cat].find(x=>x.id===openId);
+    if(s){
+      document.querySelectorAll("#skillFilters .filter-chip").forEach(b=>b.classList.toggle("active", b.dataset.cat===cat));
+      renderSkills(cat);
+      document.querySelector(`.card[data-id="${openId}"]`)?.click();
+      break;
+    }
+  }
+}
+</script>
+</body>
+</html>

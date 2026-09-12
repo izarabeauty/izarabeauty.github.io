@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logistics Challenge — Simulateur — LogiPath</title>
+<meta name="description" content="Mets-toi dans la peau d'un professionnel Supply Chain face à des situations réelles et découvre les concepts derrière chaque décision.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="simulateur">
+<header class="site-header" id="site-header"></header>
+
+<section class="hero" style="padding:56px 0;">
+  <div class="container hero-inner">
+    <p class="eyebrow" style="background:rgba(255,255,255,.12); color:#fff;">🎮 Logistics Challenge</p>
+    <h1 style="color:#fff;">Prends de vraies décisions Supply Chain</h1>
+    <p class="lead">Choisis un niveau, lis la situation, prends une décision — et découvre son analyse : ce qui est correct, les risques, les alternatives et les concepts liés.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div id="scenarioList">
+      <div class="filter-bar" id="levelFilters">
+        <button class="filter-chip active" data-level="all">Tous les niveaux</button>
+        <button class="filter-chip" data-level="Débutant">🟢 Débutant</button>
+        <button class="filter-chip" data-level="Intermédiaire">🟠 Intermédiaire</button>
+        <button class="filter-chip" data-level="Avancé">🔴 Avancé</button>
+      </div>
+      <div class="grid grid-3" id="scenarioGrid"></div>
+    </div>
+    <div id="scenarioPlay" style="display:none;"></div>
+  </div>
+</section>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/simulateur.js"></script>
+<script>
+document.getElementById("levelFilters").addEventListener("click", (e) => {
+  if(e.target.tagName !== "BUTTON") return;
+  document.querySelectorAll("#levelFilters .filter-chip").forEach(b=>b.classList.remove("active"));
+  e.target.classList.add("active");
+  renderScenarioList(e.target.dataset.level);
+});
+renderScenarioList("all");
+</script>
+</body>
+</html>
